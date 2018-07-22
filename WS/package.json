@@ -1,0 +1,23 @@
+{
+  "name": "ws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shahafby/ARGUS-Vehicle-Inventory.git"
+  },
+  "author": "shahaf ben yakir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shahafby/ARGUS-Vehicle-Inventory/issues"
+  },
+  "homepage": "https://github.com/shahafby/ARGUS-Vehicle-Inventory#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.1.1"
+  }
+}
