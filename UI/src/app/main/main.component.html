@@ -14,16 +14,24 @@
       <div class="container">
         <input type="text" class="txt" name="vehicle_name" placeholder="Vehicle name" [(ngModel)]="newVehicleName">
         <select class="selection" name="vehicle_type" [(ngModel)]="vehicleTypeText">
-          <option class="txt" disabled [ngValue]="vehicleTypeText">Choose the type of car</option>
+          <option class="txt" disabled>Choose the type of car</option>
           <option class="txt" *ngFor="let type of vehicleTypes">{{type}}</option>
         </select>
       </div>
-      <input type="submit" class="btn" value="Add Vehicle" (click)="addVehicle()">
+      
+      <input type="submit" class="btn" value="Add Vehicle" ng-disabled="true" (click)="addVehicle()">
     </form>
   </div>
   <div class="col">
-    <p class="life-container">
-      I want to climb a mountain
+    <p class="life-container" *ngFor="let vehicle of vehicles">
+      {{vehicle.name}}
+      {{vehicle.type}}
+      {{vehicle.timeCreated}}
     </p>
   </div>
 </div>
+
+<input type="button" class="btn" ng-disabled="true" value="Add Vehicle">
+
+<label>Click me to toggle: <input type="checkbox" ng-model="checked"></label><br/>
+<button class="btn" ng-model="button" ng-disabled="true">Button</button>

@@ -9,9 +9,8 @@ export class MainComponent implements OnInit {
 
   newVehicleName: String;
   newVehicleType: VehicleType;
-  newVehicleCreationDate: Date;
   vehicles = [];
-  vehicleTypeText = '';
+  vehicleTypeText = 'Choose the type of car';
   vehicleTypes: String[] = ['SUV', 'Truck', 'Hybrid'];
 
   constructor() { }
@@ -31,7 +30,9 @@ export class MainComponent implements OnInit {
         this.newVehicleType = VehicleType.Hybrid;
         break;
     }
-    const newVehicle = new Vehicle(this.newVehicleName, this.newVehicleType, this.newVehicleCreationDate);
+    const newVehicle = new Vehicle(this.newVehicleName, this.newVehicleType);
     this.vehicles.push(newVehicle);
+    this.newVehicleName = '';
+    this.vehicleTypeText = 'Choose the type of car';
   }
 }

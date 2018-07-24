@@ -2,10 +2,10 @@ export class Vehicle {
     name: String;
     type: VehicleType;
     timeCreated: Date;
-    constructor(newName: String, newType: VehicleType, newTimeCreated: Date) {
+    constructor(newName: String, newType: VehicleType) {
         this.name = newName;
         this.type = newType;
-        this.timeCreated = newTimeCreated;
+        this.timeCreated = new Date();
     }
 }
 export enum VehicleType {
