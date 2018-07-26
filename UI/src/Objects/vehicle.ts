@@ -2,6 +2,7 @@ export class Vehicle {
     name: string;
     type: VehicleType;
     timeCreated: string;
+    _id;
     constructor(newName: string, newType: VehicleType) {
         this.name = newName;
         this.type = newType;

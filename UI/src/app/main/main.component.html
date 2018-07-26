@@ -53,10 +53,10 @@
             </div>
             <mat-accordion>
 
-              <mat-expansion-panel *ngFor="let vehicle of vehicles; let i = index" (opened)="vehicleToUpdateIndex = i">
+              <mat-expansion-panel *ngFor="let vehicle of vehicles; let i = index" (opened)="vehicleToUpdateIndex = i" (opened)="resetEditControl()">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    {{vehicle.name}} ({{vehicleTypes[vehicle.type].viewValue}})
+                    {{vehicle.name}} ({{vehicleTypes[vehicle.type]?.viewValue}})
                   </mat-panel-title>
                   <mat-panel-description>
                     Created: {{vehicle.timeCreated}}
@@ -71,14 +71,14 @@
 
                   <div fxLayoutGap="10px">
                     <mat-form-field appearance="outline" fxFlex="70%">
-                      <input matInput placeholder="{{vehicles[vehicleToUpdateIndex].name}}" [(ngModel)]="editVehicleName" [formControl]="editVehicltNameControl"
+                      <input matInput placeholder="{{vehicles[vehicleToUpdateIndex]?.name}}" [(ngModel)]="editVehicleName" [formControl]="editVehicltNameControl"
                         required>
                       <mat-error *ngIf="editVehicltNameControl.hasError('required')">Please select a name</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" fxFlex="30%">
-                      <mat-select placeholder="{{vehicleTypes[vehicles[vehicleToUpdateIndex].type].viewValue}}" [(value)]="editSelectedVehicleType"
+                      <mat-select placeholder="{{vehicleTypes[vehicles[vehicleToUpdateIndex]?.type]?.viewValue}}" [(value)]="editSelectedVehicleType"
                         [formControl]="editVehicltTypeControl" required>
-                        <mat-option value="option" *ngFor="let type of vehicleTypes" [value]="type.value">{{type.viewValue}}</mat-option>
+                        <mat-option value="option" *ngFor="let type of vehicleTypes" [value]="type">{{type.viewValue}}</mat-option>
                       </mat-select>
                       <mat-error *ngIf="editVehicltTypeControl.hasError('required')">Please choose a type</mat-error>
                     </mat-form-field>
