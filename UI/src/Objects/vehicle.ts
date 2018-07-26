@@ -1,11 +1,11 @@
 export class Vehicle {
-    name: String;
+    name: string;
     type: VehicleType;
-    timeCreated: Date;
-    constructor(newName: String, newType: VehicleType) {
+    timeCreated: string;
+    constructor(newName: string, newType: VehicleType) {
         this.name = newName;
         this.type = newType;
-        this.timeCreated = new Date();
+        this.timeCreated = new Date().toLocaleString();
     }
 }
 export enum VehicleType {

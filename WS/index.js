@@ -1,6 +1,8 @@
 "use strict";
 const express = require('express');
 const Mongo  = require('mongodb');
+var cors = require('cors')
+
 const MongoClient = Mongo.MongoClient;
 const DB_URL = "mongodb://root:aq1sw2@ds243041.mlab.com:43041/argus_vehicle_db";
 const app = express();
@@ -9,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 let server = express();
 server.use(bodyParser.json());
+server.use(cors());
 
 server
 // route for adding a vehicle 
@@ -18,6 +21,7 @@ server
 
 // route for getting all vehicles 
 .get('/getVehicles', (req, res) => {
+	console.log('receivec get');
 	getVehiclesFromDB(req, res);
 })
 
@@ -48,7 +52,6 @@ let addVehicleToDb = (req, res) => {
 		}
 		let database = db.db('argus_vehicle_db');
 		let collection = database.collection('vehicle_collection');
-		data.time_created = new Date();
 		collection.insertOne(data, (err, cb) => {
 			if(err){
 				console.error(err);

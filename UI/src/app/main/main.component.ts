@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Vehicle, VehicleType } from '../../Objects/vehicle';
+import {FormControl, Validators} from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { DeleteConfirmDialogComponent } from '../dialogs/delete-confirm-dialog/delete-confirm-dialog.component';
+import { ServerService } from '../server.service';
+
+export interface Type {
+  value: VehicleType;
+  viewValue: string;
+}
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -7,32 +16,50 @@ import { Vehicle, VehicleType } from '../../Objects/vehicle';
 })
 export class MainComponent implements OnInit {
 
-  newVehicleName: String;
-  newVehicleType: VehicleType;
-  vehicles = [];
-  vehicleTypeText = 'Choose the type of car';
-  vehicleTypes: String[] = ['SUV', 'Truck', 'Hybrid'];
+  vehicleToUpdateIndex = 0;
+  vehicltTypeControl = new FormControl('', [Validators.required]);
+  vehicltNameControl = new FormControl('', [Validators.required]);
+  editVehicltTypeControl = new FormControl('', [Validators.required]);
+  editVehicltNameControl = new FormControl('', [Validators.required]);
+  newVehicleName: string;
+  editVehicleName: string;
+  vehicles: Vehicle[] = [{name: 'first', type: VehicleType.SUV, timeCreated: new Date().toLocaleString()}];
+  selectedVehicleType: Type;
+  editSelectedVehicleType: Type;
+  vehicleTypes: Type[] = [
+    {value: VehicleType.SUV, viewValue: 'SUV' },
+    {value: VehicleType.Truck, viewValue: 'Truck'},
+    {value: VehicleType.Hybrid, viewValue: 'Hybrid'}
+  ];
 
-  constructor() { }
+  deleteConfirmDialogComponent: MatDialogRef<DeleteConfirmDialogComponent>;
+
+  constructor(private dialog: MatDialog, private serverService: ServerService) { }
 
   ngOnInit() {
-  }
+    this.serverService.getAllVehicles();
+    this.serverService.vehiclesArray
+    .subscribe(vehiclesArray => {
+      this.vehicles = vehiclesArray;
+    });
+   }
 
   addVehicle() {
-    switch (this.vehicleTypeText) {
-      case 'SUV':
-        this.newVehicleType = VehicleType.SUV;
-        break;
-      case 'Truck':
-        this.newVehicleType = VehicleType.Truck;
-        break;
-      case 'Hybrid':
-        this.newVehicleType = VehicleType.Hybrid;
-        break;
-    }
-    const newVehicle = new Vehicle(this.newVehicleName, this.newVehicleType);
+    const newVehicle = new Vehicle(this.newVehicleName, this.selectedVehicleType.value);
     this.vehicles.push(newVehicle);
-    this.newVehicleName = '';
-    this.vehicleTypeText = 'Choose the type of car';
+    this.vehicltTypeControl.reset();
+    this.vehicltNameControl.reset();
+    this.serverService.addVehicle(newVehicle);
   }
+
+  updateVehicle() {
+    console.log(this.vehicleToUpdateIndex);
+    this.editVehicltTypeControl.reset();
+    this.editVehicltNameControl.reset();
+  }
+
+  openDeleteVehicleDialog() {
+    this.deleteConfirmDialogComponent = this.dialog.open(DeleteConfirmDialogComponent);
+  }
+
 }
