@@ -10,8 +10,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ServerService {
 
+  loader: Boolean = false;
   private vehicles = new BehaviorSubject<any>('');
   vehiclesArray = this.vehicles.asObservable();
+
   constructor(private http: HttpClient) { }
 
   private serverURL = 'http://localhost:3000';
@@ -23,15 +25,20 @@ export class ServerService {
   };
 
   getAllVehicles() {
+    this.loader = true;
     this.http.get(`${this.serverURL}/getVehicles`, this.httpOptions)
       .subscribe(results => {
         this.vehicles.next(results);
+        this.loader = false;
       });
   }
 
   addVehicle(vehicle) {
+    this.loader = true;
     this.http.put(`${this.serverURL}/addVehicle`, vehicle, this.httpOptions)
-      .subscribe(results => { });
+      .subscribe(results => {
+        this.getAllVehicles();
+       });
   }
 
   deleteVehicle(id) {

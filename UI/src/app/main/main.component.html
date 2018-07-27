@@ -1,5 +1,5 @@
 <div fxLayout="column">
-  <mat-toolbar color="primary">
+  <mat-toolbar class="tool-bar">
     <span class="fill-space"></span>
     <div fxLayoutAlign="center">
       <span>Vehicle Inventory</span>
@@ -47,95 +47,62 @@
         <mat-card>
           <div fxLayout="column" fxLayoutGap="10px">
             <mat-toolbar>Your current vehicle list ({{vehicles.length}})</mat-toolbar>
-            <div fxLayout="column" fxLayoutGap="10px">
-              <span>This show your current vehicle inventory. </span>
-              <span>By clicking a vehicle, you can edit or permenantly remove it.</span>
+            <div class="loader" fxLayoutAlign="center" *ngIf="serverService.loader">
+            <!-- <div class="loader" *ngIf="serverService.loader"> -->
+              <mat-spinner></mat-spinner>
             </div>
-            <mat-accordion>
+            <div  *ngIf="!serverService.loader" fxLayout="column" fxLayoutGap="15px">
+              <div fxLayout="column" fxLayoutGap="10px">
+                <span>This show your current vehicle inventory. </span>
+                <span>By clicking a vehicle, you can edit or permenantly remove it.</span>
+              </div>
+              <mat-accordion>
 
-              <mat-expansion-panel *ngFor="let vehicle of vehicles; let i = index" (opened)="vehicleToUpdateIndex = i" (opened)="resetEditControl()">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{vehicle.name}} ({{vehicleTypes[vehicle.type]?.viewValue}})
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    Created: {{vehicle.timeCreated}}
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
+                <mat-expansion-panel *ngFor="let vehicle of vehicles; let i = index" (opened)="vehicleToUpdateIndex = i" (opened)="resetEditControl()">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{vehicle.name}} ({{vehicleTypes[vehicle.type]?.viewValue}})
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Created: {{vehicle.timeCreated}}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
 
-                <div fxLayoutGap="8px" fxLayout="column">
+                  <div fxLayoutGap="8px" fxLayout="column">
 
-                  <mat-divider [inset]="true"></mat-divider>
+                    <mat-divider [inset]="true"></mat-divider>
 
-                  <span>Change vehicle name or type. </span>
+                    <span>Change vehicle name or type. </span>
 
-                  <div fxLayoutGap="10px">
-                    <mat-form-field appearance="outline" fxFlex="70%">
-                      <input matInput placeholder="{{vehicles[vehicleToUpdateIndex]?.name}}" [(ngModel)]="editVehicleName" [formControl]="editVehicltNameControl"
-                        required>
-                      <mat-error *ngIf="editVehicltNameControl.hasError('required')">Please select a name</mat-error>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex="30%">
-                      <mat-select placeholder="{{vehicleTypes[vehicles[vehicleToUpdateIndex]?.type]?.viewValue}}" [(value)]="editSelectedVehicleType"
-                        [formControl]="editVehicltTypeControl" required>
-                        <mat-option value="option" *ngFor="let type of vehicleTypes" [value]="type">{{type.viewValue}}</mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="editVehicltTypeControl.hasError('required')">Please choose a type</mat-error>
-                    </mat-form-field>
+                    <div fxLayoutGap="10px">
+                      <mat-form-field appearance="outline" fxFlex="70%">
+                        <input matInput placeholder="{{vehicles[vehicleToUpdateIndex]?.name}}" [(ngModel)]="editVehicleName" [formControl]="editVehicltNameControl"
+                          required>
+                        <mat-error *ngIf="editVehicltNameControl.hasError('required')">Please select a name</mat-error>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="30%">
+                        <mat-select placeholder="{{vehicleTypes[vehicles[vehicleToUpdateIndex]?.type]?.viewValue}}" [(value)]="editSelectedVehicleType"
+                          [formControl]="editVehicltTypeControl" required>
+                          <mat-option value="option" *ngFor="let type of vehicleTypes" [value]="type">{{type.viewValue}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="editVehicltTypeControl.hasError('required')">Please choose a type</mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxLayout fxLayoutGap="10px">
+                      <button mat-button [disabled]="editVehicltNameControl.hasError('required') && editVehicltTypeControl.hasError('required')"
+                        color="primary" (click)="updateVehicle()">Update</button>
+                      <button mat-button (click)="openDeleteVehicleDialog()" color="warn">Delete</button>
+                    </div>
                   </div>
 
-                  <div fxLayout fxLayoutGap="10px">
-                    <button mat-raised-button [disabled]="editVehicltNameControl.hasError('required') || editVehicltTypeControl.hasError('required')"
-                      color="primary" (click)="updateVehicle()">Update</button>
-                    <button mat-button (click)="openDeleteVehicleDialog()" color="warn">Delete</button>
-                  </div>
-                </div>
+                </mat-expansion-panel>
 
-              </mat-expansion-panel>
-
-            </mat-accordion>
+              </mat-accordion>
+            </div>
           </div>
         </mat-card>
       </div>
     </div>
   </div>
 </div>
-
-<!-- 
-<div class="container color-dark">
-  <div class="col">
-    <p>Add new vehicle</p>
-  </div>
-  <div class="col">
-    <p>Your current vehicle list ({{vehicles.length}})</p>
-  </div>
-</div>
-<div class="container color-light">
-  <div class="col">
-    <p>Use this form below to add a new vehicle to your vehicle list. Don't forget to fill all blanks.</p>
-
-    <form>
-      <div class="container">
-        <input type="text" class="txt" name="vehicle_name" placeholder="Vehicle name" [(ngModel)]="newVehicleName">
-        <select class="selection" name="vehicle_type" [(ngModel)]="selectedVehicleTypeT">
-          <option class="txt" disabled>Choose the type of car</option>
-          <option class="txt" *ngFor="let type of vehicleTypes">{{type}}</option>
-        </select>
-      </div>
-      
-      <input type="submit" class="btn" value="Add Vehicle" ng-disabled="true" (click)="addVehicle()">
-    </form>
-  </div>
-  <div class="col">
-    <p class="life-container" *ngFor="let vehicle of vehicles">
-      {{vehicle.name}}
-      {{vehicle.type}}
-      {{vehicle.timeCreated}}
-    </p>
-  </div>
-</div>
-
-<input type="button" class="btn" ng-disabled="true" value="Add Vehicle">
-
-<label>Click me to toggle: <input type="checkbox" ng-model="checked"></label><br/>
-<button class="btn" ng-model="button" ng-disabled="true">Button</button> -->

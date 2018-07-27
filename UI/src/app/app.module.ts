@@ -11,7 +11,8 @@ import {
   MatButtonModule,
   MatExpansionModule,
   MatDividerModule,
-  MatDialogModule
+  MatDialogModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -44,7 +45,8 @@ import { DeleteConfirmDialogComponent } from './dialogs/delete-confirm-dialog/de
     MatButtonModule,
     MatExpansionModule,
     MatDividerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   entryComponents: [DeleteConfirmDialogComponent],
   providers: [],

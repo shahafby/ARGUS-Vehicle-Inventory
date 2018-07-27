@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,700');
+
+.tool-bar {
+  background-color: #616d7b;
+  color: white;
+}
 
 .fill-space {
     flex: 1 1 auto;
@@ -11,6 +17,12 @@
 .form-container > * {
     width: 80%;
 }  
+
+.loader {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
 
 // .container {
 //     display: grid;

@@ -45,7 +45,6 @@ export class MainComponent implements OnInit {
     this.serverService.vehiclesArray
       .subscribe(vehiclesArray => {
         this.vehicles = vehiclesArray;
-        console.log(this.vehicles);
       });
   }
 
@@ -61,8 +60,8 @@ export class MainComponent implements OnInit {
     console.log(this.vehicleToUpdateIndex, this.editVehicleName, this.editSelectedVehicleType);
     const vehicle = this.vehicles[this.vehicleToUpdateIndex];
     const id = vehicle._id;
-    vehicle.name = this.editVehicleName;
-    vehicle.type = this.editSelectedVehicleType.value;
+    vehicle.name = this.editVehicleName ? this.editVehicleName : vehicle.name;
+    vehicle.type = this.editSelectedVehicleType ? this.editSelectedVehicleType.value : vehicle.type;
     const updateObj = {
       name: vehicle.name,
       type: vehicle.type
@@ -92,4 +91,7 @@ export class MainComponent implements OnInit {
     this.editVehicltNameControl.reset();
   }
 
+  checkUpdateInputs() {
+    return (this.editVehicltTypeControl.hasError('required') && (this.editVehicltNameControl.hasError('required')));
+  }
 }
